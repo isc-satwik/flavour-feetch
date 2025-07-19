@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { TextField, Button, Box, Typography, Link, Alert } from '@mui/material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from '@mui/material/styles';
 
 const Login = ({ setUser }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const theme = useTheme();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -24,7 +26,13 @@ const Login = ({ setUser }) => {
   };
 
   return (
-    <Box maxWidth={400} mx="auto" mt={6} p={3} bgcolor="white" borderRadius={2} boxShadow={2}>
+    <Box maxWidth={400} mx="auto" mt={6} p={3} borderRadius={2} boxShadow={2}
+      sx={{
+        bgcolor: theme.palette.mode === 'dark' ? '#23272a' : 'white',
+        color: theme.palette.mode === 'dark' ? '#fff' : 'inherit',
+        transition: 'background 0.3s',
+      }}
+    >
       <Typography variant="h5" mb={2} fontWeight={700} align="center">Login</Typography>
       {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
       <form onSubmit={handleLogin}>

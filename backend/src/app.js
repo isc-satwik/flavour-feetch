@@ -6,6 +6,7 @@ const authRoutes = require('./routes/authRoutes');
 const dishRoutes = require('./routes/dishRoutes');
 const ingredientRoutes = require('./routes/ingredientRoutes');
 const historyRoutes = require('./routes/historyRoutes');
+const favoriteRoutes = require('./routes/favoriteRoutes');
 
 // Load environment variables
 dotenv.config();
@@ -19,6 +20,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/dishes', dishRoutes);
 app.use('/api/ingredients', ingredientRoutes);
 app.use('/api/history', historyRoutes);
+app.use('/api/favorites', favoriteRoutes);
 
 app.get('/', (req, res) => {
   res.send('Flavour Fetch backend is running!');
