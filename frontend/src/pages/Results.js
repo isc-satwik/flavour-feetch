@@ -1,11 +1,37 @@
-import React from 'react';
-import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Alert } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Results = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const result = location.state?.result;
+  const [ordered, setOrdered] = useState(false);
+  const [orderError, setOrderError] = useState('');
+  const [orderSuccess, setOrderSuccess] = useState('');
+
+  const handleOrder = async () => {
+    setOrderError('');
+    setOrderSuccess('');
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setOrderError('You must be logged in to place an order.');
+        return;
+      }
+      await axios.post(`http://localhost:5000/api/history`, {
+        dish_id: result.dishId,
+        servings_requested: result.servings
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setOrdered(true);
+      setOrderSuccess('Order placed and added to your history!');
+    } catch (err) {
+      setOrderError(err.response?.data?.message || 'Failed to place order.');
+    }
+  };
 
   if (!result) {
     return (
@@ -41,6 +67,18 @@ const Results = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      {orderError && <Alert severity="error" sx={{ mb: 2 }}>{orderError}</Alert>}
+      {orderSuccess && <Alert severity="success" sx={{ mb: 2 }}>{orderSuccess}</Alert>}
+      <Button
+        variant="contained"
+        color="secondary"
+        fullWidth
+        sx={{ mb: 2 }}
+        onClick={handleOrder}
+        disabled={ordered}
+      >
+        {ordered ? 'Ordered' : 'Order'}
+      </Button>
       <Button variant="contained" color="primary" fullWidth onClick={() => navigate('/')}>Back</Button>
     </Box>
   );

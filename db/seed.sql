@@ -43,3 +43,77 @@ INSERT INTO dish_ingredients (dish_id, ingredient_id, quantity_per_serving) VALU
 (3, 5, 15),   -- Onion
 (3, 6, 10),   -- Tomato
 (3, 4, 5);    -- Spices 
+
+-- Additional Ingredients
+INSERT IGNORE INTO ingredients (name, unit) VALUES
+('Potato', 'grams'),
+('Paneer', 'grams'),
+('Pasta', 'grams'),
+('Tomato Sauce', 'grams'),
+('Lettuce', 'grams'),
+('Cucumber', 'grams'),
+('Tortilla', 'pieces'),
+('Beef Patty', 'grams'),
+('Chicken Breast', 'grams'),
+('Egg', 'pieces'),
+('Cheddar Cheese', 'grams'),
+('Mayonnaise', 'grams'),
+('Mustard', 'grams'),
+('Carrot', 'grams'),
+('Onion Rings', 'grams'),
+('Avocado', 'grams'),
+('Corn', 'grams'),
+('Beans', 'grams'),
+('Chutney', 'grams');
+
+-- Additional Dishes
+INSERT INTO dishes (name, description, image_url, default_servings) VALUES
+('Dosa', 'Crispy South Indian rice pancake.', NULL, 2),
+('Pasta', 'Classic Italian pasta with sauce.', NULL, 2),
+('Burger', 'Juicy burger with cheese and veggies.', NULL, 1),
+('Salad', 'Fresh mixed vegetable salad.', NULL, 2),
+('Tacos', 'Mexican tacos with fillings.', NULL, 2);
+
+-- Dish_Ingredients for Dosa (dish_id = 4)
+INSERT INTO dish_ingredients (dish_id, ingredient_id, quantity_per_serving) VALUES
+(4, 1, 60),    -- Rice
+(4, 11, 40),   -- Potato
+(4, 20, 20),   -- Chutney
+(4, 5, 10);    -- Onion
+
+-- Dish_Ingredients for Pasta (dish_id = 5)
+INSERT INTO dish_ingredients (dish_id, ingredient_id, quantity_per_serving) VALUES
+(5, 13, 80),   -- Pasta
+(5, 6, 30),    -- Tomato
+(5, 14, 40),   -- Tomato Sauce
+(5, 7, 30),    -- Cheese
+(5, 5, 10);    -- Onion
+
+-- Dish_Ingredients for Burger (dish_id = 6)
+INSERT INTO dish_ingredients (dish_id, ingredient_id, quantity_per_serving) VALUES
+(6, 15, 100),  -- Beef Patty
+(6, 7, 30),    -- Cheese
+(6, 16, 20),   -- Lettuce
+(6, 17, 20),   -- Cucumber
+(6, 18, 1),    -- Egg
+(6, 19, 20),   -- Mayonnaise
+(6, 5, 10);    -- Onion
+
+-- Dish_Ingredients for Salad (dish_id = 7)
+INSERT INTO dish_ingredients (dish_id, ingredient_id, quantity_per_serving) VALUES
+(7, 16, 30),   -- Lettuce
+(7, 17, 30),   -- Cucumber
+(7, 21, 30),   -- Carrot
+(7, 5, 10),    -- Onion
+(7, 22, 20),   -- Onion Rings
+(7, 23, 30),   -- Avocado
+(7, 24, 30);   -- Corn
+
+-- Dish_Ingredients for Tacos (dish_id = 8)
+INSERT INTO dish_ingredients (dish_id, ingredient_id, quantity_per_serving) VALUES
+(8, 25, 1),    -- Tortilla
+(8, 26, 60),   -- Chicken Breast
+(8, 27, 40),   -- Beans
+(8, 6, 20),    -- Tomato
+(8, 7, 20),    -- Cheese
+(8, 23, 20);   -- Avocado 

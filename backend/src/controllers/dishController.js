@@ -96,10 +96,6 @@ const getScaledIngredients = async (req, res) => {
       unit: row.unit,
       quantity: row.quantity_per_serving * servings
     }));
-    // Log history if user is authenticated
-    if (req.user && req.user.userId) {
-      await historyModel.logHistory(req.user.userId, dishId, servings);
-    }
     res.json({ dishId, servings, ingredients: scaledIngredients });
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });

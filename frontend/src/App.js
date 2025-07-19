@@ -19,11 +19,12 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function LogoutButton({ user }) {
+function LogoutButton({ user, setUser }) {
   const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    setUser(null);
     navigate('/login');
   };
   return (
@@ -37,7 +38,14 @@ function LogoutButton({ user }) {
 }
 
 function App() {
-  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  const [user, setUser] = React.useState(() => JSON.parse(localStorage.getItem('user') || 'null'));
+  const [homeResetKey, setHomeResetKey] = React.useState(0);
+  React.useEffect(() => {
+    const handleStorage = () => setUser(JSON.parse(localStorage.getItem('user') || 'null'));
+    window.addEventListener('storage', handleStorage);
+    return () => window.removeEventListener('storage', handleStorage);
+  }, []);
+  const handleHomeReset = () => setHomeResetKey(k => k + 1);
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -45,30 +53,33 @@ function App() {
         <AppBar position="static" color="primary" elevation={2}>
           <Toolbar>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              <Link component={RouterLink} to="/" color="inherit" underline="none">Flavour Fetch</Link>
+              <Link component={RouterLink} to="/" color="inherit" underline="none" onClick={handleHomeReset}>
+                Flavour Fetch
+              </Link>
             </Typography>
-            <Link component={RouterLink} to="/" color="inherit" underline="hover" sx={{ mx: 1 }}>
-              Home
-            </Link>
             {user && (
               <Link component={RouterLink} to="/history" color="inherit" underline="hover" sx={{ mx: 1 }}>
                 History
               </Link>
             )}
-            {!user ? (
+            {!user && (
+              <Link component={RouterLink} to="/register" color="inherit" underline="hover" sx={{ mx: 1 }}>
+                Register
+              </Link>
+            )}
+            {!user && (
               <Link component={RouterLink} to="/login" color="inherit" underline="hover" sx={{ mx: 1 }}>
                 Login
               </Link>
-            ) : (
-              <LogoutButton user={user} />
             )}
+            {user && <LogoutButton user={user} setUser={setUser} />}
           </Toolbar>
         </AppBar>
         <Container maxWidth="md" sx={{ mt: 4 }}>
           <Routes>
-            <Route path="/login" element={<Login />} />
+            <Route path="/login" element={<Login setUser={setUser} />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Home key={homeResetKey} user={user} resetHome={handleHomeReset} greeting={user ? `Ready to conquer the kitchen, ${user.name}? Let’s fetch some flavour!` : undefined} />} />
             <Route path="/results" element={<Results />} />
             <Route path="/history" element={<History />} />
             <Route path="*" element={<NotFound />} />
